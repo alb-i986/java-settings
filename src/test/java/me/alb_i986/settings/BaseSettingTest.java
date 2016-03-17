@@ -18,7 +18,7 @@ public class BaseSettingTest {
         String key = "defined key";
         String value = "value";
         given(mockedRetriever.retrieve(key)).willReturn(value);
-        BaseSetting sut = new BaseSetting(key, mockedRetriever);
+        ConcreteBaseSetting sut = new ConcreteBaseSetting(key, mockedRetriever);
 
         String actualValue = sut.value();
 
@@ -29,7 +29,7 @@ public class BaseSettingTest {
     public void value_givenUndefinedKey() {
         String key = "undefined key";
         given(mockedRetriever.retrieve(key)).willReturn(null);
-        BaseSetting sut = new BaseSetting(key, mockedRetriever);
+        ConcreteBaseSetting sut = new ConcreteBaseSetting(key, mockedRetriever);
 
         String actualValue = sut.value();
 
@@ -41,7 +41,7 @@ public class BaseSettingTest {
         String key = "valid_key";
         String value = "value";
         given(mockedRetriever.retrieve(key)).willReturn(value);
-        BaseSetting sut = new BaseSetting(key, mockedRetriever);
+        ConcreteBaseSetting sut = new ConcreteBaseSetting(key, mockedRetriever);
 
         sut.value();
         sut.value();
@@ -53,7 +53,7 @@ public class BaseSettingTest {
     public void isDefined_givenDefinedKey() {
         String key = "defined key";
         given(mockedRetriever.retrieve(key)).willReturn("value");
-        BaseSetting sut = new BaseSetting(key, mockedRetriever);
+        ConcreteBaseSetting sut = new ConcreteBaseSetting(key, mockedRetriever);
 
         assertTrue(sut.isDefined());
     }
@@ -61,9 +61,14 @@ public class BaseSettingTest {
     public void isDefined_givenUndefinedKey() {
         String key = "undefined key";
         given(mockedRetriever.retrieve(key)).willReturn(null);
-        BaseSetting sut = new BaseSetting(key, mockedRetriever);
+        ConcreteBaseSetting sut = new ConcreteBaseSetting(key, mockedRetriever);
 
         assertFalse(sut.isDefined());
     }
 
+    private static class ConcreteBaseSetting extends BaseSetting<String> {
+        public ConcreteBaseSetting(String key, SettingRetriever retriever) {
+            super(key, retriever);
+        }
+    }
 }

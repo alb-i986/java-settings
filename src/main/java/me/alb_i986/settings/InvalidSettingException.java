@@ -1,9 +1,6 @@
 package me.alb_i986.settings;
 
-public class InvalidSettingException extends RuntimeException {
-
-    public InvalidSettingException() {
-    }
+public class InvalidSettingException extends SettingException {
 
     public InvalidSettingException(String message) {
         super(message);

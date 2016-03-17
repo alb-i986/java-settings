@@ -1,6 +1,9 @@
 package me.alb_i986.settings;
 
-public class BaseSetting implements Setting<String> {
+import me.alb_i986.settings.validators.SettingValidator;
+import me.alb_i986.settings.validators.SettingValidators;
+
+public abstract class BaseSetting<T> implements Setting<T> {
 
     /*
     Class invariants:
@@ -8,13 +11,16 @@ public class BaseSetting implements Setting<String> {
     - retriever is not null
      */
 
-    private String key;
-    private SettingRetriever retriever;
+    private final String key;
+    private T value;
+
+    private final SettingRetriever retriever;
+    private SettingValidator validator = SettingValidators.NULL_VALIDATOR;
+    private SettingConverter<T> converter;
 
     /**
      * If null and retrieved==true, it means that this is an undefined setting.
      */
-    private String value;
 
     /**
      * If true, {@link #value} will contain the actual value retrieved.
@@ -22,23 +28,33 @@ public class BaseSetting implements Setting<String> {
     private boolean retrieved;
 
     public BaseSetting(String key, SettingRetriever retriever) {
-        if (key == null) {
-            throw new IllegalArgumentException("key must not be null");
+        if (key == null || key.isEmpty()) {
+            throw new IllegalArgumentException("key must not be null nor empty");
         }
         if (retriever == null) {
             throw new IllegalArgumentException("retriever must not be null");
         }
         this.key = key;
         this.retriever = retriever;
+        this.converter = converter();
+    }
+
+    protected abstract SettingConverter<T> converter();
+
+    public Setting<T> withValidator(SettingValidator validator) {
+        this.validator = validator;
+        return this;
     }
 
     public String key() {
-        return this.key;
+        return key;
     }
 
-    public String value() {
+    public T value() {
         if (!retrieved) {
-            value = retriever.retrieve(key);
+            String rawValue = retriever.retrieve(key);
+            validator.validate(rawValue);
+            value = converter.convert(rawValue);
             retrieved = true;
         }
         return value;

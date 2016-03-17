@@ -1,9 +1,6 @@
 package me.alb_i986.settings;
 
-public class SettingConversionException extends RuntimeException {
-
-    public SettingConversionException() {
-    }
+public class SettingConversionException extends SettingException {
 
     public SettingConversionException(String message) {
         super(message);
@@ -17,3 +14,4 @@ public class SettingConversionException extends RuntimeException {
         super(cause);
     }
 }
+
