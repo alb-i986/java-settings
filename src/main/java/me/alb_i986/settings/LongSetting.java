@@ -5,23 +5,21 @@ import me.alb_i986.settings.core.BaseSettingConverter;
 import me.alb_i986.settings.core.SettingConverter;
 import me.alb_i986.settings.core.retrievers.SettingRetriever;
 
-import java.net.URL;
-
 /**
  * @author ascotto
  */
-public class URLSetting extends BaseSetting<URL> {
+public class LongSetting extends BaseSetting<Long> {
 
-    public URLSetting(String key, SettingRetriever retriever) {
+    public LongSetting(String key, SettingRetriever retriever) {
         super(key, retriever);
     }
 
     @Override
-    protected SettingConverter<URL> converter() {
-        return new BaseSettingConverter<URL>() {
+    protected SettingConverter<Long> converter() {
+        return new BaseSettingConverter<Long>() {
             @Override
-            public URL convert0(String value) throws Exception {
-                return new URL(value);
+            public Long convert0(String value) {
+                return Long.valueOf(value);
             }
         };
     }

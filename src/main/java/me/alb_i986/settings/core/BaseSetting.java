@@ -1,15 +1,13 @@
-package me.alb_i986.settings;
+package me.alb_i986.settings.core;
 
-import me.alb_i986.settings.validators.SettingValidator;
-import me.alb_i986.settings.validators.SettingValidators;
+import me.alb_i986.settings.core.retrievers.SettingRetriever;
 
+/**
+ * Concrete settings need to define the {@link #converter()}.
+ *
+ * @param <T> the type of the value of this setting
+ */
 public abstract class BaseSetting<T> implements Setting<T> {
-
-    /*
-    Class invariants:
-    - key is not null
-    - retriever is not null
-     */
 
     private final String key;
     private T value;
@@ -18,13 +16,6 @@ public abstract class BaseSetting<T> implements Setting<T> {
     private SettingValidator validator = SettingValidators.NULL_VALIDATOR;
     private SettingConverter<T> converter;
 
-    /**
-     * If null and retrieved==true, it means that this is an undefined setting.
-     */
-
-    /**
-     * If true, {@link #value} will contain the actual value retrieved.
-     */
     private boolean retrieved;
 
     public BaseSetting(String key, SettingRetriever retriever) {
@@ -39,17 +30,12 @@ public abstract class BaseSetting<T> implements Setting<T> {
         this.converter = converter();
     }
 
-    protected abstract SettingConverter<T> converter();
-
-    public Setting<T> withValidator(SettingValidator validator) {
-        this.validator = validator;
-        return this;
-    }
-
+    @Override
     public String key() {
         return key;
     }
 
+    @Override
     public T value() {
         if (!retrieved) {
             String rawValue = retriever.retrieve(key);
@@ -60,7 +46,15 @@ public abstract class BaseSetting<T> implements Setting<T> {
         return value;
     }
 
+    @Override
     public boolean isDefined() {
         return value() != null;
+    }
+
+    protected abstract SettingConverter<T> converter();
+
+    public Setting<T> withValidator(SettingValidator validator) {
+        this.validator = validator;
+        return this;
     }
 }

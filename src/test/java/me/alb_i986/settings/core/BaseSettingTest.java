@@ -1,5 +1,8 @@
-package me.alb_i986.settings;
+package me.alb_i986.settings.core;
 
+import me.alb_i986.settings.core.BaseSetting;
+import me.alb_i986.settings.core.SettingConverter;
+import me.alb_i986.settings.core.retrievers.SettingRetriever;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -69,6 +72,11 @@ public class BaseSettingTest {
     private static class ConcreteBaseSetting extends BaseSetting<String> {
         public ConcreteBaseSetting(String key, SettingRetriever retriever) {
             super(key, retriever);
+        }
+
+        @Override
+        protected SettingConverter<String> converter() {
+            return null;
         }
     }
 }

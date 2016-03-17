@@ -1,4 +1,4 @@
-package me.alb_i986.settings;
+package me.alb_i986.settings.core;
 
 public class SettingConversionException extends SettingException {
 

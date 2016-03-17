@@ -1,4 +1,4 @@
-package me.alb_i986.settings.validators;
+package me.alb_i986.settings.core;
 
 public class SettingValidators {
 

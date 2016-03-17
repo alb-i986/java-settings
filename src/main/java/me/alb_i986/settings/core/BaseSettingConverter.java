@@ -1,4 +1,4 @@
-package me.alb_i986.settings;
+package me.alb_i986.settings.core;
 
 public abstract class BaseSettingConverter<T> implements SettingConverter<T> {
 
@@ -9,12 +9,12 @@ public abstract class BaseSettingConverter<T> implements SettingConverter<T> {
         try {
             return convert0(value);
         } catch (Exception e) {
-            throw new SettingConversionException("Conversion failed: " + value, e);
+            throw new SettingConversionException("Conversion failed. Value: '" + value + "'", e);
         }
     }
 
     /**
-     * Override this with the actual conversion logic.
+     * Override this to define the actual conversion logic.
      */
     protected abstract T convert0(String value) throws Exception;
 }
