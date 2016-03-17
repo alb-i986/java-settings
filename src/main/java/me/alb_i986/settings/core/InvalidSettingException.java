@@ -3,7 +3,7 @@ package me.alb_i986.settings.core;
 public class InvalidSettingException extends SettingException {
 
     public InvalidSettingException(String invalidValue, String reason) {
-        super("Invalid value");
+        super("Setting should " + reason + " but was: " + invalidValue);
     }
 
     public InvalidSettingException(String message) {

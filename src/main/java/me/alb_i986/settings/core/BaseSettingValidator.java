@@ -7,9 +7,11 @@ public abstract class BaseSettingValidator<T> {
      */
     public void validate(T value) {
         if (!condition()) {
-            throw new InvalidSettingException(value, );
+            throw new InvalidSettingException(value.toString(), reason());
         }
     }
+
+    protected abstract String reason();
 
     protected abstract boolean condition();
 }

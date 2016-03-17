@@ -11,7 +11,7 @@ public class SettingValidators {
     };
 
     public static final SettingValidator REGEX_VALIDATOR(final String regex) {
-        return new SettingValidator<String>() {
+        return new BaseSettingValidator<String>() {
             @Override
             public void validate(String value) {
                 Pattern pattern = Pattern.compile(regex);
@@ -19,6 +19,18 @@ public class SettingValidators {
                     throw new InvalidSettingException(String.format("The value '%s' does not match with the regex '%s'", value, regex));
                 }
             }
+
+            @Override
+            protected String reason() {
+                return "";
+            }
+
+            @Override
+            protected boolean condition() {
+                Pattern pattern = Pattern.compile(regex);
+                return pattern.matcher(value).matches();
+            }
+
         };
     }
 
