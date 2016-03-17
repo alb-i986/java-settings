@@ -2,6 +2,10 @@ package me.alb_i986.settings.core;
 
 public class InvalidSettingException extends SettingException {
 
+    public InvalidSettingException(String invalidValue, String reason) {
+        super("Invalid value");
+    }
+
     public InvalidSettingException(String message) {
         super(message);
     }

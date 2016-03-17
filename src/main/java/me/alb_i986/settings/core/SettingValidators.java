@@ -4,14 +4,14 @@ import java.util.regex.Pattern;
 
 public class SettingValidators {
 
-    public static final SettingValidator NULL_VALIDATOR = new SettingValidator() {
+    public static final SettingValidator NULL_VALIDATOR = new SettingValidator<?>() {
         @Override
         public void validate(String value) {
         }
     };
 
     public static final SettingValidator REGEX_VALIDATOR(final String regex) {
-        return new SettingValidator() {
+        return new SettingValidator<String>() {
             @Override
             public void validate(String value) {
                 Pattern pattern = Pattern.compile(regex);

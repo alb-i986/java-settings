@@ -13,7 +13,8 @@ public abstract class BaseSetting<T> implements Setting<T> {
     private T value;
 
     private final SettingRetriever retriever;
-    private SettingValidator validator = SettingValidators.NULL_VALIDATOR;
+    private SettingValidator<String> preConversionValidator = SettingValidators.NULL_VALIDATOR;
+    private SettingValidator<T> postConversionValidator = SettingValidators.NULL_VALIDATOR;
     private SettingConverter<T> converter;
 
     private boolean retrieved;
@@ -38,10 +39,15 @@ public abstract class BaseSetting<T> implements Setting<T> {
     @Override
     public T value() {
         if (!retrieved) {
-            String rawValue = retriever.retrieve(key);
-            validator.validate(rawValue);
-            value = converter.convert(rawValue);
             retrieved = true;
+            String rawValue = retriever.retrieve(key);
+            preConversionValidator.validate(rawValue);
+            if (rawValue == null) {
+                value = null;
+            } else {
+                value = converter.convert(rawValue);
+                postConversionValidator.validate(value);
+            }
         }
         return value;
     }
@@ -53,8 +59,12 @@ public abstract class BaseSetting<T> implements Setting<T> {
 
     protected abstract SettingConverter<T> converter();
 
-    public Setting<T> withValidator(SettingValidator validator) {
-        this.validator = validator;
+    public Setting<T> withPreConversionValidator(SettingValidator<String> validator) {
+        this.preConversionValidator = validator;
+        return this;
+    }
+    public Setting<T> withPostConversionValidator(SettingValidator<T> validator) {
+        this.postConversionValidator = validator;
         return this;
     }
 }

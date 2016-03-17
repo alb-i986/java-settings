@@ -4,11 +4,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>me.alb-i986.utils</groupId>
-    <artifactId>java-settings</artifactId>
+    <artifactId>settings</artifactId>
     <version>0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>java-settings</name>
+    <name>settings</name>
     <url>https://github.com/alb-i986/java-settings/</url>
 
     <licenses>

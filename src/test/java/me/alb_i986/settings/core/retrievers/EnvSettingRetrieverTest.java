@@ -1,6 +1,5 @@
-package me.alb_i986.settings.core;
+package me.alb_i986.settings.core.retrievers;
 
-import me.alb_i986.settings.core.retrievers.EnvSettingRetriever;
 import org.junit.Test;
 
 import static org.hamcrest.Matchers.equalTo;

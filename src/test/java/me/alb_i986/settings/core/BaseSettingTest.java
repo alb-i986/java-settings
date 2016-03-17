@@ -1,15 +1,20 @@
 package me.alb_i986.settings.core;
 
-import me.alb_i986.settings.core.BaseSetting;
-import me.alb_i986.settings.core.SettingConverter;
+import me.alb_i986.settings.StringSetting;
 import me.alb_i986.settings.core.retrievers.SettingRetriever;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import static org.junit.Assert.*;
-import static org.mockito.BDDMockito.*;
+import static org.hamcrest.Matchers.equalTo;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.verify;
+import static org.mockito.BDDMockito.verifyNoMoreInteractions;
 
 @RunWith(MockitoJUnitRunner.class)
 public class BaseSettingTest {
@@ -21,18 +26,19 @@ public class BaseSettingTest {
         String key = "defined key";
         String value = "value";
         given(mockedRetriever.retrieve(key)).willReturn(value);
-        ConcreteBaseSetting sut = new ConcreteBaseSetting(key, mockedRetriever);
+        StringSetting sut = new StringSetting(key, mockedRetriever);
 
         String actualValue = sut.value();
 
-        assertEquals(value, actualValue);
+        verify(mockedRetriever).retrieve(key);
+        assertThat(actualValue, equalTo(value));
     }
 
     @Test
     public void value_givenUndefinedKey() {
-        String key = "undefined key";
-        given(mockedRetriever.retrieve(key)).willReturn(null);
-        ConcreteBaseSetting sut = new ConcreteBaseSetting(key, mockedRetriever);
+        String undefinedKey = "undefined key";
+        given(mockedRetriever.retrieve(undefinedKey)).willReturn(null);
+        StringSetting sut = new StringSetting(undefinedKey, mockedRetriever);
 
         String actualValue = sut.value();
 
@@ -44,7 +50,7 @@ public class BaseSettingTest {
         String key = "valid_key";
         String value = "value";
         given(mockedRetriever.retrieve(key)).willReturn(value);
-        ConcreteBaseSetting sut = new ConcreteBaseSetting(key, mockedRetriever);
+        StringSetting sut = new StringSetting(key, mockedRetriever);
 
         sut.value();
         sut.value();
@@ -56,7 +62,7 @@ public class BaseSettingTest {
     public void isDefined_givenDefinedKey() {
         String key = "defined key";
         given(mockedRetriever.retrieve(key)).willReturn("value");
-        ConcreteBaseSetting sut = new ConcreteBaseSetting(key, mockedRetriever);
+        StringSetting sut = new StringSetting(key, mockedRetriever);
 
         assertTrue(sut.isDefined());
     }
@@ -64,19 +70,8 @@ public class BaseSettingTest {
     public void isDefined_givenUndefinedKey() {
         String key = "undefined key";
         given(mockedRetriever.retrieve(key)).willReturn(null);
-        ConcreteBaseSetting sut = new ConcreteBaseSetting(key, mockedRetriever);
+        StringSetting sut = new StringSetting(key, mockedRetriever);
 
         assertFalse(sut.isDefined());
-    }
-
-    private static class ConcreteBaseSetting extends BaseSetting<String> {
-        public ConcreteBaseSetting(String key, SettingRetriever retriever) {
-            super(key, retriever);
-        }
-
-        @Override
-        protected SettingConverter<String> converter() {
-            return null;
-        }
     }
 }
