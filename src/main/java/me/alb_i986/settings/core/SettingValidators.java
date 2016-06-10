@@ -26,7 +26,7 @@ public class SettingValidators {
             }
 
             @Override
-            protected boolean condition() {
+            protected boolean isValid(String value) {
                 Pattern pattern = Pattern.compile(regex);
                 return pattern.matcher(value).matches();
             }
